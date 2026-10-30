@@ -1,5 +1,7 @@
 # Playwright AI Test Generator
 
+[![CI](https://github.com/hmodali2611/playwright-ai-test-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/hmodali2611/playwright-ai-test-generator/actions/workflows/ci.yml)
+
 Write a test scenario in plain English, get a readable Playwright test back. When a selector breaks after a UI change, the suite heals it at runtime and tells you which selector to fix.
 
 ```text
@@ -74,6 +76,10 @@ npm run generate -- scenarios/invalid-login.txt --url http://localhost:4173
 ## Tech
 
 TypeScript · Playwright · Anthropic / OpenAI APIs · GitHub Actions
+
+## Run with a real model in CI
+
+Add an `ANTHROPIC_API_KEY` repository secret, then run the **Real LLM generation** workflow from the Actions tab. It generates a spec for every scenario with Claude, runs the generated specs, and uploads them as an artifact.
 
 ## License
 

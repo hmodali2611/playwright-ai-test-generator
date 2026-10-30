@@ -109,7 +109,7 @@ export function getProvider(): LLMProvider {
   if (choice === 'anthropic') {
     const key = process.env.ANTHROPIC_API_KEY;
     if (!key) throw new Error('ANTHROPIC_API_KEY is not set');
-    return new AnthropicProvider(key, process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5');
+    return new AnthropicProvider(key, process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-5-5');
   }
   if (choice === 'openai') {
     const key = process.env.OPENAI_API_KEY;

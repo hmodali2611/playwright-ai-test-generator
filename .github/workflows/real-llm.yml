@@ -1,0 +1,41 @@
+name: Real LLM generation
+# Generates Playwright specs from every scenario with a real model, then runs them.
+# Add the repository secret ANTHROPIC_API_KEY (Settings > Secrets and variables > Actions) to enable.
+on:
+  workflow_dispatch:
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    env:
+      LLM_PROVIDER: anthropic
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - name: Check for API key
+        if: env.ANTHROPIC_API_KEY == ''
+        run: |
+          echo "::error::Add the ANTHROPIC_API_KEY repository secret to run this workflow."
+          exit 1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Generate specs with the real model
+        run: |
+          node scripts/serve.mjs &
+          SERVER=$!
+          sleep 2
+          for f in scenarios/*.txt; do
+            name=$(basename "$f" .txt)
+            npm run generate -- "$f" --url http://localhost:4173 --out "tests/generated-llm/$name.spec.ts"
+          done
+          kill $SERVER
+      - name: Run the generated specs
+        run: npx playwright test tests/generated-llm --project=chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: llm-generated-specs
+          path: tests/generated-llm/
