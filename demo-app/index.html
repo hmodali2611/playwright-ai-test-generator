@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ShopLite Demo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 40px auto; }
+    form, section { display: grid; gap: 8px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>ShopLite</h1>
+
+  <form id="login-form" aria-label="Login">
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="you@example.com" />
+    <label for="password">Password</label>
+    <input id="password" type="password" />
+    <!-- The button id changed from "login-btn" to "signin-submit" in a redesign.
+         tests/self-healing.spec.ts still uses the old id on purpose. -->
+    <button id="signin-submit" type="submit">Sign in</button>
+    <p id="error" role="alert" class="hidden">Invalid email or password</p>
+  </form>
+
+  <section id="store" class="hidden" aria-label="Store">
+    <h2>Welcome, shopper</h2>
+    <p>Wireless Earbuds - $49</p>
+    <button data-testid="add-earbuds">Add to cart</button>
+    <p data-testid="cart-count">Cart: 0 items</p>
+    <button id="checkout">Checkout</button>
+    <p id="confirmation" class="hidden">Order placed! Thank you.</p>
+  </section>
+
+  <script>
+    let cart = 0;
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const ok = document.getElementById('email').value === 'demo@shoplite.test'
+        && document.getElementById('password').value === 'secret123';
+      document.getElementById('error').classList.toggle('hidden', ok);
+      if (ok) {
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('store').classList.remove('hidden');
+      }
+    });
+    document.querySelector('[data-testid="add-earbuds"]').addEventListener('click', () => {
+      cart += 1;
+      document.querySelector('[data-testid="cart-count"]').textContent = `Cart: ${cart} item${cart === 1 ? '' : 's'}`;
+    });
+    document.getElementById('checkout').addEventListener('click', () => {
+      if (cart > 0) document.getElementById('confirmation').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>

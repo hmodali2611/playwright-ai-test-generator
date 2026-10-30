@@ -1,0 +1,9 @@
+1. Open http://localhost:4173
+2. Enter 'demo@shoplite.test' in Email
+3. Enter 'secret123' in Password
+4. Click Sign in
+5. Verify 'Welcome, shopper' is shown
+6. Click Add to cart
+7. Verify 'Cart: 1 item' is shown
+8. Click Checkout
+9. Verify 'Order placed! Thank you.' is shown

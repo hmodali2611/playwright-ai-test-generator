@@ -1,0 +1,5 @@
+- Open http://localhost:4173
+- Enter 'demo@shoplite.test' in Email
+- Enter 'wrong-password' in Password
+- Click Sign in
+- Verify 'Invalid email or password' is shown
